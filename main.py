@@ -7,7 +7,7 @@ from spore_bot import SporeBot
 load_dotenv()
 
 intents = discord.Intents.default()
-intents.message_content = True  # ← THIS is the key fix
+intents.message_content = True
 
 bot = SporeBot(intents=intents)
 
