@@ -76,5 +76,11 @@
     "'The act of taking a psychedelic is an act of trust in yourself and in the universe.' - Terence McKenna",
     "'Psychedelics return us to a place where everything is possible, and anything can happen.' - Terence McKenna"
 ]
+    },
+    "commands": {
+        "/help": [
+            "/pic - get a random picture",
+            "/future - this will be a feature added later"
+        ]
     }
 }

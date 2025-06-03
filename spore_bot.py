@@ -33,10 +33,11 @@ class SporeBot(discord.Client):
 
             Behavior:
             1. Ignores messages from self to prevent loops
-            2. Normalizes message content (lowercase, removes punctuation)
-            3. Checks each word against keyword lists in responses.json
-            4. For magic_mushrooms category, randomly selects between facts/quotes
-            5. Sends a random response from the matched category
+            2. Handles /help command
+            3. Normalizes message content (lowercase, removes punctuation)
+            4. Checks each word against keyword lists in responses.json
+            5. For magic_mushrooms category, randomly selects between facts/quotes
+            6. Sends a random response from the matched category
         """
 
         # Bot will not respond to its own messages
@@ -47,6 +48,20 @@ class SporeBot(discord.Client):
         message_content = message.content.lower()
         # Using regular expressions to handle special characters in messages
         message_words = re.sub(r"[^\w\s]", "", message_content).split()
+
+        # Handling /help command
+        if message.content == "/help":
+            help_list = self._json_responses["commands"]["/help"]
+            formatted_help = "\n".join(help_list)
+
+            embed = discord.Embed(
+                title="📘 Help Menu",
+                description = formatted_help,
+                color = discord.Color.blue()
+            )
+
+            await message.channel.send(embed=embed)
+            return
 
         # Picking the random response
         for word in message_words:
