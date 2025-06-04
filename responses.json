@@ -79,8 +79,28 @@
     },
     "commands": {
         "/help": [
-            "/pic - get a random picture",
-            "/future - this will be a feature added later"
-        ]
+            "/pic - get a picture of a random mushroom",
+            "/f - this will be a feature added later"
+        ],
+        "/pic": []
+    },
+    "gallery": {
+        "Amanita muscaria": "The classic fairytale mushroom. It can be toxic if not properly prepared by boiling. Does not contain psilocybin - its main actives are muscimol and ibotenic acid. It is however psychoactive. Effects can be sedative, delirious or euphoric, so not a typical psychedelic trip. It was historically used by Siberian shamans for spiritual journeys. There are stories saying reindeer seek it out and get high on it, possibly inspiring Santa legends. Grows in symbiosis with trees like birch, pine or spruce.",
+        "Clathrus ruber": "Also known as the Red Cage fungus. It emerges from a white egg and expands into a striking, latticed red structure. Smells like rotting flesh to attract flies that spread its spores. Not edible and not psychedelic.",
+        "Entoloma hochstetteri": "Known for its intense blue color, this rare mushroom is native to New Zealand and India. It’s not psychoactive or edible, but it’s visually striking enough to appear on New Zealand’s $50 bill. The color fades with age, and its gills turn pink as spores mature.",
+        "Gymnopilus luteofolius": "Called the 'Yellow-gilled Gymnopilus', this striking species is known for its vibrant reddish to purplish caps with yellow gills and stems. Often found growing on decaying wood, especially hardwood stumps and logs. It has a bitter taste and is not typically consumed. Although some specimens contain psilocybin, its psychoactive properties are inconsistent and mild. Appreciated more for its beauty than effects.",
+        "Gyromitra esculenta": "A brain-like mushroom often mistaken for morels. Though sometimes eaten in parts of Europe after special preparation, it's highly toxic and can be deadly if consumed raw. Contains gyromitrin, a compound that breaks down into monomethylhydrazine, a rocket fuel component. Not psychedelic, definitely dangerous.",
+        "Hericum erinaceus": "Also called Lion’s Mane. This shaggy white mushroom looks like a pom-pom and is prized for its potential brain-boosting properties. It’s edible and non-psychedelic, but may promote nerve growth and memory enhancement. Used in traditional Chinese medicine and popular in nootropic circles.",
+        "Hydnellum peckii": "The 'Bleeding Tooth Fungus.' White and spongy, it oozes red liquid that looks like blood. It's not edible or psychoactive, but very visually dramatic. Found in North American and European forests, growing symbiotically with conifers. Its pigments have even been used for dyes.",
+        "Laccaria amethystina": "The Amethyst Deceiver. A small, vibrant purple mushroom whose color fades with age, making it tricky to identify. Edible but can be confused with toxic species, so caution is advised. Found across temperate forests and often grows near beech and oak trees.",
+        "Lactarius indigo": "This mushroom bleeds blue when cut. Known for its deep indigo color and milk-like latex, it's one of the few blue mushrooms that are actually edible. Common in North and Central America, often found in pine forests. Not psychedelic.",
+        "Mycena chlorophos": "A bioluminescent mushroom that glows green in the dark! Native to tropical forests in Asia and Brazil. Its cap and gills emit light, especially at night in high humidity. Not edible or psychedelic, but magical-looking and extremely rare to spot glowing in the wild.",
+        "Panaeolus cyanescens": "Called the ‘Blue Meanie’, this species is known for its strong psychoactive potency. It typically grows on dung in tropical and subtropical regions. Panaeolus cyanescens bruises blue due to high psilocybin and psilocin content. Despite its small size, it's among the most potent psilocybin mushrooms. Effects include intense visuals, euphoria, and altered perception of time and space.",
+        "Phallus indusiatus": "The 'Veiled Lady' fungus. Famous for its lacy white skirt and strong odor of decay, which attracts insects that spread its spores. Edible in its egg stage and prized in some Asian cuisines. Not psychoactive, but looks like something out of a fantasy movie.",
+        "Psilocybe azurescens": "One of the most potent psilocybin-containing mushrooms, nicknamed the 'Flying Saucer' mushroom due to its wide, saucer-like cap. Found along the Pacific Northwest coast. Effects can be intense and are not recommended for beginners. Causes strong visuals and deep mental shifts.",
+        "Psilocybe cubensis": "The most well-known psychedelic mushroom. Easy to cultivate and used widely in modern psychedelic research. Effects are visual, euphoric, and introspective. Comes in many strains, including Golden Teacher, B+, and Penis Envy. Thrives on dung and decaying plant matter.",
+        "Psilocybe cyanescens": "Called the 'Wavy Cap' for its rippled cap edge. Very potent and often found in urban wood chip landscaping. Its blue bruising and high psilocybin content make it popular among foragers. Fast-acting, with strong visual effects and a rapid onset.",
+        "Psilocybe mexicana": "A species used ceremonially by Indigenous peoples of Central America. Played a key role in Western discovery of psilocybin. Known for its spiritual and introspective effects rather than intense visuals. Grows naturally in grassy areas in Mexico and Central America.",
+        "Psilocybe semilanceata": "Known as the 'Liberty Cap.' One of the most potent naturally occurring psychedelic mushrooms. Small, cone-shaped, and found in meadows and pastures across Europe and North America. Contains high levels of psilocybin and psilocin. Revered for its clarity-inducing trips."
     }
 }
