@@ -80,7 +80,8 @@
     "commands": {
         "/help": [
             "/pic - get a picture of a random mushroom",
-            "/f - this will be a feature added later"
+            "/mute - mute Spore McKenna[bot]",
+            "/unmute - unmute Spore McKenna[bot]"
         ],
         "/pic": []
     },

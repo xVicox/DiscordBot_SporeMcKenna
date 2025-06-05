@@ -20,6 +20,7 @@ class SporeBot(discord.Client):
         # Loading the responses.json into a dictionary
         with open('responses.json', 'r') as file:
             self._json_responses = json.load(file)
+        self._user_id = None
 
     async def on_ready(self):
         """Callback when the bot successfully connects to Discord."""
@@ -35,11 +36,17 @@ class SporeBot(discord.Client):
             1. Ignores messages from self to prevent loops
             2. Handles /help command
             3. Handles /pic command
-            4. Normalizes message content (lowercase, removes punctuation)
-            5. Checks each word against keyword lists in responses.json
-            6. For magic_mushrooms category, randomly selects between facts/quotes
-            7. Sends a random response from the matched category
+            4. Handles /mute & /unmute commands
+            5. Normalizes message content (lowercase, removes punctuation)
+            6. Checks each word against keyword lists in responses.json
+            7. For magic_mushrooms category, randomly selects between facts/quotes
+            8. Sends a random response from the matched category
         """
+
+        # Catching user data on every post
+        self._user_id = message.author.id
+        user_username = message.author
+        print(f"Author: {user_username} : ID: {self._user_id}")
 
         # Bot will not respond to its own messages
         if message.author == self.user:
@@ -56,6 +63,21 @@ class SporeBot(discord.Client):
                 color = discord.Color.blue()
             )
             await message.channel.send(embed=embed)
+            return
+
+        # Muting the bot for the user
+        if message.content == "/mute":
+            if SporeBot.mute_user(self._user_id):
+                await message.channel.send("🔇 Spore McKenna is now muted.")
+
+        # Unmuting the bot
+        if message.content == "/unmute":
+            if not SporeBot.is_user_muted(self._user_id):
+                await message.channel.send("👂 Spore McKenna is listening to you.")
+            if SporeBot.unmute_user(self._user_id):
+                await message.channel.send("🔊 Spore McKenna is unmuted.")
+
+        if SporeBot.is_user_muted(self._user_id):
             return
 
         # Handling image responses aka. /pic command, bot picks a random picture from the gallery and posts it
@@ -84,8 +106,6 @@ class SporeBot(discord.Client):
                 await message.channel.send("No images found in the gallery.")
             return
 
-        if message.content == "/f":
-            await message.channel.send("Later means at some point in the future, right?")
         # Handles textual responses
         else:
             # Preparing the user messages for processing
@@ -105,3 +125,71 @@ class SporeBot(discord.Client):
                             response = random.choice(category_data["facts"])
                         await message.channel.send(f"{response}")
                         return
+
+    @staticmethod
+    def is_user_muted(user_id):
+        """
+        Checks if a user is muted by looking up their user ID in a text file.
+
+        Args:
+            user_id (int or str): The Discord user ID to check.
+
+        Returns:
+            bool: True if the user is muted (i.e., their ID is in the file),
+                  False otherwise or if the file does not exist.
+        """
+        try:
+            with open("resources/muted_users.txt", "r", encoding="UTF-8") as file:
+                for line in file:
+                    if str(user_id) == line.strip():
+                        return True # User is already muted
+            return False
+        except FileNotFoundError:
+            return False
+
+    @staticmethod
+    def mute_user(user_id):
+        """
+            Adds a user's ID to the muted users list if they are not already muted.
+
+            Args:
+                user_id (int or str): The Discord user ID to mute.
+
+            Returns:
+                bool: True if the user was successfully muted,
+                      False if the user was already muted or if an error occurred.
+            """
+        try:
+            if SporeBot.is_user_muted(user_id):
+                return False # User is already muted
+            else:
+                with open("resources/muted_users.txt", "a", encoding="UTF-8") as file:
+                    file.write(f"{user_id}\n")
+                return True
+        except FileNotFoundError:
+            return False
+
+    @staticmethod
+    def unmute_user(user_id):
+        """
+            Removes a user's ID from the muted users list if they are currently muted.
+
+            Args:
+                user_id (int or str): The Discord user ID to unmute.
+
+            Returns:
+                bool: True if the user was successfully unmuted,
+                      False if the user was not muted or if an error occurred.
+            """
+        try:
+            if SporeBot.is_user_muted(user_id):
+                with open ("resources/muted_users.txt", "r", encoding="UTF-8") as file:
+                    lines = file.readlines()
+                with open("resources/muted_users.txt", "w", encoding="UTF-8") as file:
+                    for line in lines:
+                        if line.strip() != str(user_id):
+                            file.write(line)
+                return True
+            else: return False
+        except FileNotFoundError:
+            return False
