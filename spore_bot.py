@@ -1,8 +1,13 @@
 import os
 import random
 import re
+import time
+
 import discord
 import json
+from discord.ext import tasks
+import time
+import asyncio
 
 class SporeBot(discord.Client):
     """
@@ -20,11 +25,23 @@ class SporeBot(discord.Client):
         # Loading the responses.json into a dictionary
         with open('responses.json', 'r') as file:
             self._json_responses = json.load(file)
+
+        # Storing user's id for user controlled features
         self._user_id = None
+
+        # Daily mushroom related
+        # Triggering an asynchronous on startup
+        self._daily_channel = None
+        self._daily_mushroom_time = "14:19"
 
     async def on_ready(self):
         """Callback when the bot successfully connects to Discord."""
         print(f"{self.user} has sprouted in the mycelial network! 🍄")
+
+        # Fetching Discord channel ID for Mushroom of the day feature
+        channel_id = 1379376364435542079
+        self._daily_channel = self.get_channel(channel_id)
+        asyncio.create_task(self.mushroom_of_the_day(self._daily_mushroom_time))
 
     async def on_message(self, message):
         """Processes incoming messages and sends responses when keywords are detected.
@@ -193,3 +210,14 @@ class SporeBot(discord.Client):
             else: return False
         except FileNotFoundError:
             return False
+
+    async def mushroom_of_the_day(self, exact_time_hhmm):
+        print(f"Mushroom of the day triggered at: {time.strftime('%H:%M')} =>> will post at: {exact_time_hhmm}")
+        while True:
+            await asyncio.sleep(60)
+            current_time = time.strftime("%H:%M")
+            if current_time == exact_time_hhmm:
+                if self._daily_channel:
+                    await self._daily_channel.send("🍄 *Mushroom of the Day!* Stay spongy!")
+                else:
+                    print("Daily channel not found! Message not sent.")
