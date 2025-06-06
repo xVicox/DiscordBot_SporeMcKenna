@@ -52,12 +52,13 @@ class SporeBot(discord.Client):
             Behavior:
             1. Ignores messages from self to prevent loops
             2. Handles /help command
-            3. Handles /pic command
-            4. Handles /mute & /unmute commands
-            5. Normalizes message content (lowercase, removes punctuation)
-            6. Checks each word against keyword lists in responses.json
-            7. For magic_mushrooms category, randomly selects between facts/quotes
-            8. Sends a random response from the matched category
+            3. Handles /mute & /unmute commands
+            4. Handles /pic command
+            5. Handles /submit_pic command
+            6. Normalizes message content (lowercase, removes punctuation)
+            7. Checks each word against keyword lists in responses.json
+            8. For magic_mushrooms category, randomly selects between facts/quotes
+            9. Sends a random response from the matched category
         """
 
         # Catching user data on every post
@@ -100,6 +101,29 @@ class SporeBot(discord.Client):
         # Handling image responses aka. /pic command, bot picks a random picture from the gallery and posts it
         if message.content == "/pic":
             await self.send_random_mushroom_embed(self._daily_channel, feature="/pic")
+
+        if message.content == "/submit_pic":
+            attachments = message.attachments
+            if not attachments:
+                await message.channel.send("You have to attach a picture when using /submit_pic")
+                return
+            for attachment in attachments:
+                if attachment.filename.lower().endswith((".jpg", ".jpeg", ".png")):
+                    file_path = os.path.join("resources/pics/submitted", attachment.filename)
+                    await attachment.save(file_path)
+                    await message.delete()
+                    try:
+                        server_name = message.guild.name if message.guild else "one of the servers you just posted in"
+                        await message.author.send(
+                            f"Hello! I am Spore McKenna[bot] from the **{server_name}** server.\n\n"
+                            "Thanks for submitting your mushroom photo! 🍄\n"
+                            "Your submission is under review and will be looked at soon."
+                        )
+                    except discord.Forbidden:
+                        # User has DMs disabled for server members
+                        await message.channel.send(f"{message.author.mention}, I couldn't DM you - check your privacy settings.")
+                    return
+                await message.channel.send("Only .jpg, .jpeg or .png files are accepted.")
 
         # Handles textual responses
         else:
@@ -201,6 +225,24 @@ class SporeBot(discord.Client):
                     print("Daily channel not found! Message not sent.")
 
     async def send_random_mushroom_embed(self, channel, feature):
+        """
+        Sends a mushroom-themed embedded message to a given Discord channel.
+
+        This method selects a random image from the local 'resources/pics' directory,
+        constructs an embed with its corresponding Latin name and description,
+        and sends it to the specified Discord channel.
+
+        Parameters:
+            channel (discord.abc.Messageable): The Discord channel to send the embed to.
+            feature (str): The context of the message. Accepts:
+                - "/pic": A user-invoked random mushroom post.
+                - "mushroom of the day": A scheduled daily mushroom feature.
+
+        Notes:
+            - The images must be in JPG or JPEG format and should match keys in the 'gallery' section
+              of the loaded JSON file to retrieve additional information.
+            - If no valid images are found, a fallback message is sent instead.
+        """
         gallery_dir_path = "resources/pics"
         # List only .jpg and .jpeg extension images
         image_files = [file for file in os.listdir(gallery_dir_path)
@@ -209,7 +251,7 @@ class SporeBot(discord.Client):
         if image_files:
             chosen_img = random.choice(image_files)
             latin_name_only, extension = os.path.splitext(chosen_img)
-            img_path = os.path.join(gallerydir_path, chosen_img)
+            img_path = os.path.join(gallery_dir_path, chosen_img)
             file = discord.File(img_path, filename=chosen_img)
             info_text = self._json_responses["gallery"][latin_name_only]
             if feature == "/pic":

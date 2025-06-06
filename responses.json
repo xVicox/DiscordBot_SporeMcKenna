@@ -81,9 +81,9 @@
         "/help": [
             "/pic - get a picture of a random mushroom",
             "/mute - mute Spore McKenna[bot]",
-            "/unmute - unmute Spore McKenna[bot]"
-        ],
-        "/pic": []
+            "/unmute - unmute Spore McKenna[bot]",
+            "/submit_pic - submit pic for a gallery[.jpg, .jpeg, .png]"
+        ]
     },
     "gallery": {
         "Amanita muscaria": "The classic fairytale mushroom. It can be toxic if not properly prepared by boiling. Does not contain psilocybin - its main actives are muscimol and ibotenic acid. It is however psychoactive. Effects can be sedative, delirious or euphoric, so not a typical psychedelic trip. It was historically used by Siberian shamans for spiritual journeys. There are stories saying reindeer seek it out and get high on it, possibly inspiring Santa legends. Grows in symbiosis with trees like birch, pine or spruce.",
