@@ -1,32 +1,31 @@
 # 🍄 SporeBot
 
-A Discord bot that responds to mushroom-related terms with educational facts and psychedelic quotes. Perfect for mycology enthusiasts and consciousness explorers!
+**SporeBot** is a Discord bot designed for mushroom lovers, mycologists, and curious psychonauts. It reacts to mushroom-related keywords, shares random educational facts or psychedelic quotes, and now includes a rich gallery experience with daily posts and user submissions.
 
-## Features
-- **Keyword-triggered responses**: Replies when users mention mushroom-related terms
-- **Two response modes**:
-  - `educational`: Scientific facts about fungi
-  - `magic_mushrooms`: Psychedelic quotes and facts
-- **Smart filtering**: Ignores punctuation and bot's own messages
+---
 
-## Setup
-1. Install requirements:
+## 🌟 Features
+
+- **Keyword-triggered responses**  
+  Replies to mushroom-related terms with:
+  - `educational`: Scientific facts about fungi  
+  - `magic_mushrooms`: Psychedelic quotes and facts  
+
+- **Smart filtering**  
+  Ignores punctuation and messages from other bots.
+
+- **Gallery integration**  
+  - `/pic`: Sends a random mushroom image with info.  
+  - **Mushroom of the Day**: Automatically posts one image daily at a specified time.
+
+- **User submission system**  
+  - `/submit_pic`: Users can submit their own mushroom photos.  
+  - Images are not posted publicly—submissions are acknowledged via DM and reviewed manually.
+
+---
+
+## 🔧 Setup
+
+1. **Install requirements:**
    ```bash
    pip install discord.py python-dotenv
-
-2. Add your Discord token to .env:
-   ```bash
-   DISCORD_TOKEN=your_token_here
-
-4. Run the bot
-   ```bash
-   python main.py
-
-## Customization
-Edit responses.json to add new keywords/responses
-
-Modify on_message in spore_bot.py to change reply logic
-
-## Example interaction
-User: Have you heard about psilocybin?
-Bot: "Psilocybin is the psychoactive compound found in magic mushrooms."
