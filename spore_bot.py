@@ -32,7 +32,7 @@ class SporeBot(discord.Client):
         # Daily mushroom related
         # Triggering an asynchronous on startup
         self._daily_channel = None
-        self._daily_mushroom_time = "14:19"
+        self._daily_mushroom_time = "15:03"
 
     async def on_ready(self):
         """Callback when the bot successfully connects to Discord."""
@@ -99,29 +99,7 @@ class SporeBot(discord.Client):
 
         # Handling image responses aka. /pic command, bot picks a random picture from the gallery and posts it
         if message.content == "/pic":
-            folder_path = "resources/pics"
-            # List only .jpg files
-            image_files = [file for file in os.listdir(folder_path)
-                           if (file.lower().endswith(".jpg")
-                               or file.lower().endswith(".jpeg"))]
-
-            if image_files:
-                chosen_img = random.choice(image_files)
-                latin_name_only, extension = os.path.splitext(chosen_img)
-                img_path = os.path.join(folder_path, chosen_img)
-                file = discord.File(img_path, filename=chosen_img)
-                info_text = self._json_responses["gallery"][latin_name_only]
-                embed = discord.Embed(
-                    title=f"🍄 Random mushroom: *{latin_name_only}*",
-                    description=info_text,
-                    color=discord.Color.dark_green()
-                )
-                embed.set_image(url=f"attachment://{chosen_img}")
-                await message.channel.send(embed=embed, file=file)
-
-            else:
-                await message.channel.send("No images found in the gallery.")
-            return
+            await self.send_random_mushroom_embed(self._daily_channel, feature="/pic")
 
         # Handles textual responses
         else:
@@ -218,6 +196,35 @@ class SporeBot(discord.Client):
             current_time = time.strftime("%H:%M")
             if current_time == exact_time_hhmm:
                 if self._daily_channel:
-                    await self._daily_channel.send("🍄 *Mushroom of the Day!* Stay spongy!")
+                    await self.send_random_mushroom_embed(self._daily_channel, feature="mushroom of the day")
                 else:
                     print("Daily channel not found! Message not sent.")
+
+    async def send_random_mushroom_embed(self, channel, feature):
+        gallery_dir_path = "resources/pics"
+        # List only .jpg and .jpeg extension images
+        image_files = [file for file in os.listdir(gallery_dir_path)
+                       if (file.lower().endswith(".jpg")
+                           or file.lower().endswith(".jpeg"))]
+        if image_files:
+            chosen_img = random.choice(image_files)
+            latin_name_only, extension = os.path.splitext(chosen_img)
+            img_path = os.path.join(gallerydir_path, chosen_img)
+            file = discord.File(img_path, filename=chosen_img)
+            info_text = self._json_responses["gallery"][latin_name_only]
+            if feature == "/pic":
+                embed_title = f"🍄 Random mushroom: *{latin_name_only}*"
+                embed_color = discord.Color.dark_green()
+            if feature == "mushroom of the day":
+                embed_title = f"🍄 Mushroom of the day: *{latin_name_only}*"
+                embed_color = discord.Color.green()
+            embed = discord.Embed(
+                title=embed_title,
+                description=info_text,
+                color=embed_color
+            )
+            embed.set_image(url=f"attachment://{chosen_img}")
+            await channel.send(embed=embed, file=file)
+        else:
+            await channel.send("No images found in the gallery.")
+        return
