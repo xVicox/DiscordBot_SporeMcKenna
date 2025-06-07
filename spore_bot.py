@@ -60,6 +60,9 @@ class SporeBot(discord.Client):
             8. For magic_mushrooms category, randomly selects between facts/quotes
             9. Sends a random response from the matched category
         """
+        # Ignore DMs
+        if message.guild is None:
+            return
 
         # Catching user data on every post
         self._user_id = message.author.id
@@ -105,25 +108,38 @@ class SporeBot(discord.Client):
         if message.content == "/submit_pic":
             attachments = message.attachments
             if not attachments:
-                await message.channel.send("You have to attach a picture when using /submit_pic")
+                await message.channel.send(content="You have to attach a picture when using /submit_pic",
+                                           reference=message)
                 return
+
+            # Find valid image attachment
+            valid_image = None
             for attachment in attachments:
                 if attachment.filename.lower().endswith((".jpg", ".jpeg", ".png")):
-                    file_path = os.path.join("resources/pics/submitted", attachment.filename)
-                    await attachment.save(file_path)
-                    await message.delete()
-                    try:
-                        server_name = message.guild.name if message.guild else "one of the servers you just posted in"
-                        await message.author.send(
-                            f"Hello! I am Spore McKenna[bot] from the **{server_name}** server.\n\n"
-                            "Thanks for submitting your mushroom photo! 🍄\n"
-                            "Your submission is under review and will be looked at soon."
-                        )
-                    except discord.Forbidden:
-                        # User has DMs disabled for server members
-                        await message.channel.send(f"{message.author.mention}, I couldn't DM you - check your privacy settings.")
-                    return
-                await message.channel.send("Only .jpg, .jpeg or .png files are accepted.")
+                    valid_image = attachment
+                    break
+
+            if valid_image:
+                # attaching author name to file name
+                valid_image.filename = f"{message.author}_" + valid_image.filename
+                file_path = os.path.join("resources/pics/submitted", valid_image.filename)
+                await valid_image.save(file_path)
+                await message.delete()
+                try:
+                    server_name = message.guild.name if message.guild else "one of the servers you just posted in"
+                    await message.author.send(
+                        f"Hello! I am Spore McKenna[bot] from the **{server_name}** server.\n\n"
+                        "Thanks for submitting your mushroom photo! 🍄\n"
+                        "Your submission is under review and will be looked at soon.\n\n"
+                        "[the bot will not answer to further messages]"
+                    )
+                except discord.Forbidden:
+                    # User has DMs disabled for server members
+                    await message.channel.send(content=f"{message.author.mention}, I couldn't DM you - check your privacy settings.",
+                                               reference=message)
+                return
+            await message.channel.send(content="Only .jpg, .jpeg or .png files are accepted.",
+                                       reference=message)
 
         # Handles textual responses
         else:
